@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import {
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut
 } from 'firebase/auth'
@@ -44,7 +45,16 @@ export default function Home() {
   }
 
   const login = async () => {
-
+    try {
+      const user = await signInWithEmailAndPassword(
+        auth,
+        loginEmail,
+        loginPassword
+      );
+      console.log(user);
+    } catch (error) {
+      console.log(error.message)
+    }
   }
 
   const logout = async () => {
@@ -76,7 +86,7 @@ export default function Home() {
           <FormLabel>Password</FormLabel>
           <Input onChange={(e) => {setLoginPassword(e.target.value)}} bg="white" type="password" />
         </FormControl>
-        <Button colorScheme='teal'>Sign In</Button>
+        <Button onClick={login} colorScheme='teal'>Sign In</Button>
       </Box>
 
       <Text fontWeight="bold" mb={2}>User Logged In: {user?.email}</Text>
